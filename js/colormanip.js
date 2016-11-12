@@ -68,7 +68,7 @@ function colormapSpeed(v, vmin, vmax, vehType){
 
 
     var vrel= Math.min( (v-vmin)/(vmax-vmin), 1.0);
-    // transform nonlinearly sshaped to shrink the unnaturally wide 
+    // transform nonlinearly sshaped to shrink the unnaturally wide
     // central green regions
 
     var vrel_nl=(vrel<=0.5) ? 2*Math.pow(vrel,2) : 1-2*Math.pow(vrel-1,2)
@@ -79,7 +79,7 @@ function colormapSpeed(v, vmin, vmax, vehType){
     var sat=1;
 
      // brightness=1: all white; 0: all black; colors: in between
-    var brightness=0.5; 
+    var brightness=0.5;
     //var rgbaArr=hslaToRgba(0.1,1,0.5,0.5);
     var rgbaArr=hslaToRgba(hue,sat,brightness,0.5);
 
@@ -111,7 +111,7 @@ function drawColormap(xCenterPix, yCenterPix, widthPix, heightPix,
 		      vminMap, vmaxMap, vminDisplay, vmaxDisplay){
 
     ctx.setTransform(1,0,0,1,xCenterPix-0.5*widthPix,
-		     yCenterPix-0.5*heightPix); 
+		     yCenterPix-0.5*heightPix);
 
     //console.log("in drawColormap: xCenterPix="+xCenterPix+" yCenterPix="+yCenterPix);
 
@@ -127,7 +127,7 @@ function drawColormap(xCenterPix, yCenterPix, widthPix, heightPix,
 	var yTop=i*hBox;
         var val=vminDisplay+i/(nvals-1)*(vmaxDisplay-vminDisplay);
         ctx.fillStyle=colormapSpeed(val,vminMap,vmaxMap,"car");
-        ctx.fillRect(xLeft,yTop,widthPix,hBox); 
+        ctx.fillRect(xLeft,yTop,widthPix,hBox);
     }
 
 
@@ -140,18 +140,20 @@ function drawColormap(xCenterPix, yCenterPix, widthPix, heightPix,
     ctx.fillStyle="#FFFFFF";
 
     // white bg box
-    ctx.fillRect(widthPix,-0.5*textsize,textwidthPix,heightPix+textsize); 
+    ctx.fillRect(widthPix,-0.5*textsize,textwidthPix,heightPix+textsize);
 
     for (var i=0; i<nlegend; i++){
 	var v=vminMap+i*(vmaxDisplay-vminDisplay)/(nlegend-1);
 	var xLeft=widthPix+0.2*textsize;
 	var yBot=0.4*textsize+(heightPix-0)*i/(nlegend-1);
-        var speedStr=Math.round(3.6*v)+" km/h";
+        // var speedStr=Math.round(3.6*v)+" km/h";
+        // change km/h to mph
+        var speedStr = Math.round(2.2369*v) + " mph"
         ctx.fillStyle="#000000";
 	ctx.fillText(speedStr,xLeft,yBot);
     }
 
     // revert to neutral transformation at the end!
-    ctx.setTransform(1,0,0,1,0,0); 
+    ctx.setTransform(1,0,0,1,0,0);
 
 }

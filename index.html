@@ -8,23 +8,32 @@
     <meta http-equiv="content-type" content="text/html; charset=iso-8859-1">
     <link href="css/styleResponsive.css" rel="stylesheet" type="text/css" />
     <link href="css/sliders.css" rel="stylesheet" type="text/css" />
+    <link href="css/myStyle.css" rel="stylesheet" type="text/css" />
+    <!-- load the d3.js library -->
+    <script src="https://d3js.org/d3.v3.min.js"></script>
+    <script src="http://d3js.org/queue.v1.min.js"></script>
+    <title>Microsimulation of Traffic Flow</title>
+    <!-- Load c3.css -->
+    <link href="c3/c3.css" rel="stylesheet" type="text/css">
+    <!-- Load c3.js, d3.js has already been loaded -->
+    <script src="c3/c3.min.js"></script>
 
-    <title>Microsimulation of Traffic Flow</title> 
+    <link href="parcoords/d3.parcoords.css" rel="stylesheet" type="text/css">
+    <script src="parcoords/d3.parcoords.js"></script>
 </head>
 
 
 <body>
-
+<h1>Traffic Simulation and the Phantom Traffic Jam</h1>
+<p> Try to observe the below simulation and graphs for 30 seconds. What did you see?</p>
 <div id="container">
-
-
 <!-- ############################################## -->
 <!-- header: title image loaded as background image via css -->
 <!-- ############################################## -->
 
-<div id="header"> 
+<!-- <div id="header"> -->
   <!--<center>Microsimulation of Traffic Flow: html5 Version</center>-->
-</div> 
+<!-- </div> -->
 
 
 <!-- ############################################## -->
@@ -32,19 +41,14 @@
 <!-- ############################################## -->
 
 <!-- redirects to other scenarios, defines myRedirectX -->
-<script src="js/redirect.js" type="text/javascript"></script>
+<!-- <script src="js/redirect.js" type="text/javascript"></script> -->
 
 <div id="scenarios">
 <center>
   <button id="startStop" onclick="myStartStopFunction()">Stop</button>
-  <button onclick="myRedirectRing()">Ringroad</button>
-  <button onclick="myRedirectOnramp()">Onramp</button>
-  <button onclick="myRedirectOfframp()">Offramp</button>
-  <button onclick="myRedirectRoadworks()">Road Works</button>
-  <button onclick="myRedirectRouting()">Routing</button>
 </center>
 
-</div> 
+</div>
 
 
 <!-- ############################################## -->
@@ -53,7 +57,7 @@
 
 <div id="contents">
   <canvas id="canvas_ring" width="700" height="700">
-    You are probably using a very ancient web browser (or an Internet Explorer) 
+    You are probably using a very ancient web browser (or an Internet Explorer)
     not supporting html5 canvas. Please switch to another browser for
     running this simulation.
   </canvas>
@@ -70,20 +74,11 @@
 <table id="mainTable" border="0" cellspacing="1" cellpadding="0" >
 <!-- !! >Timewarp<, not > Timewarp < etc because of engl2ger. bash-->
 
-
 <tr>
 <td>Density</td>
 <td> <div id="track_density"> <div id="slider_density"></div></div></td>
 <td> <div id="valueField_density"></div>
 </tr>
-
-
-<tr>
-<td>Truck Fraction</td>
-<td> <div id="track_truckFrac"> <div id="slider_truckFrac"></div></div></td>
-<td> <div id="valueField_truckFrac"></div>
-</tr>
-
 
 <tr>
 <td> Max Acceleration a</td>
@@ -92,12 +87,30 @@
 </tr>
 
 <tr>
+<td> Comfort  Decel b</td>
+<td> <div id="track_IDM_b"> <div id="slider_IDM_b"></div></div></td>
+<td> <div id="valueField_IDM_b"></div>
+</tr>
+
+<tr>
+<td>Timewarp</td>
+<td> <div id="track_timewarp"> <div id="slider_timewarp"></div></div></td>
+<td> <div id="valueField_timewarp"></div>
+</tr>
+
+<tr style="display:none">
+<td>Truck Fraction</td>
+<td> <div id="track_truckFrac"> <div id="slider_truckFrac"></div></div></td>
+<td> <div id="valueField_truckFrac"></div>
+</tr>
+
+<!-- <tr>
 <td> Lane Changing rate</td>
 <td> to be implemented </td>
-<td> -  </td>
+<td> -  </td> -->
 <!--<td> <div id="track_IDM_a"> <div id="slider_IDM_a"></div></div></td>
 <td> <div id="valueField_IDM_a"></div>-->
-</tr>
+<!-- </tr> -->
 
 </table>
 </div>
@@ -110,11 +123,11 @@
 
 <div id="sliders2">
 <table border="0" cellspacing="1" cellpadding="0">
-<tr>
+<!-- <tr>
 <td>Timewarp</td>
 <td> <div id="track_timewarp"> <div id="slider_timewarp"></div></div></td>
 <td> <div id="valueField_timewarp"></div>
-</tr>
+</tr> -->
 
 <tr>
 <td> Desired Speed v</sub>0</sub> </td>
@@ -134,11 +147,11 @@
 <td> <div id="valueField_IDM_s0"></div>
 </tr>
 
-<tr>
+<!-- <tr>
 <td> Comfort  Decel b</td>
 <td> <div id="track_IDM_b"> <div id="slider_IDM_b"></div></div></td>
 <td> <div id="valueField_IDM_b"></div>
-</tr>
+</tr> -->
 
 
 <!--
@@ -171,11 +184,11 @@
 <!-- ############################################## -->
 
 
-<div id="infoFlags"> <link data-wi-src="infoFlags.html" /></div>
-<div id="infoModels"> 
+<!-- <div id="infoFlags"> <link data-wi-src="infoFlags.html" /></div>
+<div id="infoModels">
 <link data-wi-src="infoModels.html" /></div>
 <div id="infoScenarios"> <link data-wi-src="infoScenarios.html" /></div>
-<div id="infoLinks"> <link data-wi-src="infoLinks.html" /></div>
+<div id="infoLinks"> <link data-wi-src="infoLinks.html" /></div>-->
 <div id="impressum"> <a href="impressum.html">
   &copy; Martin Treiber</a></div>
 
@@ -183,9 +196,131 @@
 <!-- end former navigation*.html frame   -->
 <!-- ############################################## -->
 
+<div id="temporal_graph_0">
+</div>
+<div id="temporal_graph_1">
+</div>
+
 
 </div> <!-- end outer container -->
 
+<h2>The Phantom Traffic Jam</h2>
+<p>The phantom traffic jam is the common traffic backups on the highway without apparent reason.
+    There is no accident but every car slows down and brakes in a certain area.
+    To be more specific, a traffic jam situation could be identified by a large difference between the maximum speed and the minimum speed in the above graph. </p>
+
+<h2>What cause the Phantom Traffic Jam?</h2>
+<p>The phantom traffic jam is caused by the driver's strategy on the distance to the front car,
+    how quick they could catch up the front car's speed, and how hard they step on the brake.
+    These behaviors are encoded in the following variable in the below parallel coordinates.
+    Are you able to find what kind of the behaviour are more likely to cause a phantom traffic jam?
+    Hint: try to use brush on each coordinate and see how the left three variables effect the average, minimum, and maximum speed.</p>
+
+<script type="text/javascript">
+//Step 0.3 load the data and call the function ready
+queue()
+    // .defer(d3.json, "traffic_data_500_all.json")
+    .defer(d3.json, "traffic_data.json")
+    .await(ready);
+
+var svgWidth = screen.width - 200;
+var svgHeight = screen.height * 3 / 5;
+
+function ready(error, td) {
+    if (error != null) {
+        console.log(error);
+    }
+
+    // this function is called after all datasets are loaded.
+    // trafficData = td;
+    //
+    // var chartDiv = d3.select("body")
+    //     .append("div")
+    //     .attr("top", 100)
+    //     .attr("width", svgWidth)
+    //     .attr("height", svgHeight);
+    //
+    // // console.log(trafficData);
+    // var dataMap = {"20":[], "40":[], "60":[], "80":[], "100":[]};
+    // trafficData.forEach (function (d) {
+    //     // get new data obj for key, which in this case is the day value
+    // 	var dataAll = d['avgSpeedAll'];
+    //     var key = "density:"+ d['density'] + " acc:"+ d['acceleration'] + " dec:"+ d['deceleration'];
+    //     dataAll.unshift(key);
+    //     // console.log(dataAll)
+    //     dataMap[d['density'].toString()].push(dataAll);
+    // });
+    // // console.log(dataArray);
+    // var chart = c3.generate({
+    //     bindto: chartDiv,
+    //     data: {
+    //         columns: dataMap["40"],
+    //         type: 'spline'
+    //     },
+    //     size: {
+    //         height: svgHeight
+    //     }
+    // });
+
+    // chart 2
+
+
+    // <div id="example" class="parcoords"></div>
+    // <div id="grid"></div>
+    var parDiv = d3.select("body")
+        .append("div")
+        .style("width", screen.width +"px")
+        .style("height", svgHeight +"px")
+        .style("position", "absolute")
+        .style("text-align", "left")
+        // .style("margin-left", "150px")
+        .style("background-color", "lightgray")
+        .attr("id", "example")
+        .attr("class", "parcoords");
+
+
+    var colorScale = d3.scale.linear()
+      .domain([0, 10, 20])
+      .range(["red", "yellow", "blue"])
+      .interpolate(d3.interpolateLab);
+
+
+    // Draw parallel coordinates
+    var color = function(d) { return colorScale(d['avgSpeed']); };
+    var parcoords = d3.parcoords()("#example")
+                .data(td)
+                .dimensions(['density','acceleration', 'deceleration', 'avgSpeed', 'minSpeed', 'maxSpeed'])
+                .color(color)
+                .render()
+                .createAxes()
+                .brushMode("1D-axes");
+
+    // Draw legend
+    var w = 120, h = svgHeight/2;
+    var key = d3.select(".parcoords").append("svg")
+      .style("position", "absolute")
+      .style("left", "5px")
+      .style("top",  "25%")
+      .style("pointer-events", "none")
+      .attr("width", w).attr("height", h);
+    var legend = key.append("defs").append("svg:linearGradient")
+      .attr("id", "gradient")
+      .attr("x1", "100%").attr("y1", "0%")
+      .attr("x2", "100%").attr("y2", "100%")
+      .attr("spreadMethod", "pad");
+
+    legend.append("stop").attr("offset", "0%").attr("stop-color", "blue").attr("stop-opacity", 1);
+    legend.append("stop").attr("offset", "50%").attr("stop-color", "yellow").attr("stop-opacity", 1);
+    legend.append("stop").attr("offset", "100%").attr("stop-color", "red").attr("stop-opacity", 1);
+
+    key.append("rect").attr("width", w - 100).attr("height", h - 20).style("fill", "url(#gradient)").attr("transform", "translate(0,10)");
+    var y = d3.scale.linear().range([h - 20, 0]).domain([0, 20]);
+    var yAxis = d3.svg.axis().scale(y).orient("right");
+    key.append("g").attr("class", "y axis").attr("transform", "translate(21,10)").call(yAxis).append("text").attr("transform", "rotate(-90)").attr("y", 30).attr("dy", ".71em").style("text-anchor", "end").text("average speed");
+
+
+}
+</script>
 
 <!-- ########################################################## -->
 <!-- specific scripts; position below any simulation elements ! -->
@@ -194,17 +329,16 @@
 <script src="js/dw_slider.js" type="text/javascript"></script>
 <script src="js/canvasresize.js" type="text/javascript"></script>
 
-<script src="js/ring_gui.js"></script>  
-<script src="js/colormanip.js"></script> 
+<script src="js/ring_gui.js"></script>
+<script src="js/colormanip.js"></script>
 
-<script src="js/models.js"></script> 
-<script src="js/vehicle.js"></script> 
+<script src="js/models.js"></script>
+<script src="js/vehicle.js"></script>
 
 <script src="js/paths.js"></script>
 <script src="js/road.js"></script>
 <script src="js/ring.js"></script>
 
-<script src="wm-html-include/wm-html-include.js"> </script>
 
 </body>
 </html>

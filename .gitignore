@@ -1,5 +1,5 @@
 # user-defined ignores (avoid committing large files)
-
+*.DS_Store
 *.swp
 
 ## Core latex/pdflatex auxiliary files:
@@ -11,7 +11,7 @@
 *.out
 *.toc
 
-## generated files 
+## generated files
 *_ger.*
 *~
 int

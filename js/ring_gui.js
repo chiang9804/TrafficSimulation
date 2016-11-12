@@ -14,11 +14,12 @@
 
 // geometry of sliders
 
-var sliderWidth=151; // must be fixed ?!!
-
+// var sliderWidth=151; // must be fixed ?!!
+// var sliderWidth=calc(15vmin);
+var sliderWidth = document.getElementById('track_IDM_a').offsetWidth - document.getElementById('slider_IDM_a').offsetWidth - 2;
+console.log("sliderWidth: "+ sliderWidth);
 
 // controlled contents of sliders
-
 var timewarpInit=8;
 var timewarp=timewarpInit;
 var timewarp_min=0.1;
@@ -29,42 +30,37 @@ var scale=scaleInit;
 var scale_min=0.6;
 var scale_max=5;
 
-
-var densityInit=0.038;  // vehicles/m/lane
+var densityInit=0.040;  // vehicles/m/lane
 var density=densityInit;
 var density_min=0.001;
 var density_max=0.100;
 
-var truckFracInit=0.04;
+var truckFracInit=0.00;
 var truckFrac=truckFracInit;
 var truckFrac_min=0;
 var truckFrac_max=0.5;
 
-
-
-
-var IDM_v0Init=30; 
+var IDM_v0Init=30;
 var IDM_v0=IDM_v0Init;
 var IDM_v0_min=5;
 var IDM_v0_max=40;
 
-
-var IDM_TInit=1.5; 
+var IDM_TInit=1.5;
 var IDM_T=IDM_TInit;
 var IDM_T_min=0.6;
 var IDM_T_max=3;
 
-var IDM_s0Init=2; 
+var IDM_s0Init=2;
 var IDM_s0=IDM_s0Init;
 var IDM_s0_min=0.5;
 var IDM_s0_max=5;
 
-var IDM_aInit=0.3; 
+var IDM_aInit=0.5;
 var IDM_a=IDM_aInit;
 var IDM_a_min=0.3;
 var IDM_a_max=3;
 
-var IDM_bInit=3;
+var IDM_bInit=1.5;
 var IDM_b=IDM_bInit;
 var IDM_b_min=0.5;
 var IDM_b_max=5;
@@ -79,8 +75,8 @@ function updateModels(){
     var T_truck=factor_T_truck*IDM_T;
     var a_truck=factor_a_truck*IDM_a;
 
-    //var longModelCar etc defined (w/o value) in onramp.js 
-    // var MOBIL_bBiasRight and other MOBIL params defined in onramp.js 
+    //var longModelCar etc defined (w/o value) in onramp.js
+    // var MOBIL_bBiasRight and other MOBIL params defined in onramp.js
     longModelCar=new ACC(IDM_v0,IDM_T,IDM_s0,IDM_a,IDM_b);
     longModelTruck=new ACC(v0_truck,T_truck,IDM_s0,a_truck,IDM_b);
     LCModelCar=new MOBIL(MOBIL_bSafe, MOBIL_bSafeMax,
@@ -94,7 +90,7 @@ function updateModels(){
 
 // thread starts with "var myRun=init();" or "myRun=init();"
 // in init() at end: setInterval(main_loop, 1000/fps);
-// thread stops with "clearInterval(myRun);" 
+// thread stops with "clearInterval(myRun);"
 
 
 //##################################################################################
@@ -112,7 +108,7 @@ function updateModels(){
 var myRun;
 var isStopped=false;
 
-function myStartStopFunction(){ 
+function myStartStopFunction(){
 
     clearInterval(myRun);
     console.log("in myStartStopFunction: isStopped=",isStopped);
@@ -126,7 +122,7 @@ function myStartStopFunction(){
 	document.getElementById('startStop').innerHTML="Resume";
 	isStopped=true;
     }
-    
+
 }
 
 
@@ -137,8 +133,12 @@ function myStartStopFunction(){
 //#############################################
 
 DYN_WEB.Event.domReady( function() {
-    var slider_timewarp 
+    var slider_timewarp
         = new DYN_WEB.Slider('slider_timewarp', 'track_timewarp', 'h');
+    // initialize the slide bar position
+    var cur_timewarp = get_timewarp();
+    var x = (cur_timewarp - timewarp_min) * sliderWidth / (timewarp_max - timewarp_min);
+    document.getElementById('slider_timewarp').style.left = x+"px";
     slider_timewarp.on_move = function(x,y) {// function (x) OK
         change_timewarp(x);
         document.getElementById('valueField_timewarp').innerHTML
@@ -156,12 +156,12 @@ DYN_WEB.Event.domReady( function() {
 
 function change_timewarp(xSlider){
     timewarp=timewarp_min
-	+(timewarp_max-timewarp_min)*xSlider/sliderWidth; 
+	+(timewarp_max-timewarp_min)*xSlider/sliderWidth;
     dt=timewarp/fps;
 }
 function get_timewarp(){return timewarp;}
 
-// inverse function of change_timewarp; 
+// inverse function of change_timewarp;
 // timewarp displayed on html at start of html page
 
 function change_timewarpSliderPos(x){
@@ -179,7 +179,7 @@ function change_timewarpSliderPos(x){
 
 /*
 DYN_WEB.Event.domReady( function() {
-    var slider_scale 
+    var slider_scale
         = new DYN_WEB.Slider('slider_scale', 'track_scale', 'h');
     slider_scale.on_move = function(x,y) {
         change_scale(x);
@@ -218,8 +218,12 @@ function change_scaleSliderPos(scale){
 //#############################################
 
 DYN_WEB.Event.domReady( function() {
-    var slider_truckFrac 
+    var slider_truckFrac
         = new DYN_WEB.Slider('slider_truckFrac', 'track_truckFrac', 'h');
+    // initialize the slide bar position
+    var cur_truckFrac = get_truckFrac();
+    var x = (cur_truckFrac - truckFrac_min) * sliderWidth / (truckFrac_max - truckFrac_min);
+    document.getElementById('slider_truckFrac').style.left = x+"px";
     slider_truckFrac.on_move = function(x,y) {
         change_truckFrac(x);
         document.getElementById('valueField_truckFrac').innerHTML
@@ -247,21 +251,28 @@ function change_truckFracSliderPos(truckFrac){
 //#############################################
 
 
-DYN_WEB.Event.domReady( function() {
-    var slider_density 
+DYN_WEB.Event.domReady(function() {
+    var slider_density
         = new DYN_WEB.Slider('slider_density', 'track_density', 'h');
-    slider_density.on_move = function(x,y) {
+
+    // initialize the slide bar position
+    var cur_density = get_density();
+    var x = (cur_density - density_min) * sliderWidth / (density_max - density_min);
+    document.getElementById('slider_density').style.left = x+"px";
+    slider_density.on_move = function(x, y) {
         change_density(x);
         document.getElementById('valueField_density').innerHTML
            =parseFloat(1000*get_density(),10).toFixed(0)+" /km/lane";
-        };
-    }
-);
+        // var desiredDistance = 1/get_density()/1.6;
+        // document.getElementById('valueField_density').innerHTML
+        //        =parseFloat(desiredDistance/1000).toFixed(1)+" miles";
+    };
+});
 
 
-function change_density(x){
+function change_density(x) {
     density=density_min
-	+(density_max-density_min)*x/sliderWidth; 
+	+(density_max-density_min)*x/sliderWidth;
 }
 
 function get_density(){return density;}
@@ -271,10 +282,11 @@ function change_densitySliderPos(density){
 	*(density-density_min)/(density_max-density_min);
     document.getElementById('valueField_density').innerHTML
            =parseFloat(1000*density,10).toFixed(0)+" /km/lane";
+    // var nDesired= Math.floor(mainroad.nLanes*mainroad.roadLen*density);
+    // var desiredDistance = mainroad.roadLen * mainroad.roadLen / nDesired / 1.6;
+    // document.getElementById('valueField_density').innerHTML
+    //        =parseFloat(desiredDistance/1000).toFixed(1)+" miles";
 }
-
-
-
 
 //#############################################
 // Slider for long Model parameters (also update sliders.css!)
@@ -282,7 +294,7 @@ function change_densitySliderPos(density){
 
 
 DYN_WEB.Event.domReady( function() {
-    var slider_IDM_v0 
+    var slider_IDM_v0
         = new DYN_WEB.Slider('slider_IDM_v0', 'track_IDM_v0', 'h');
     slider_IDM_v0.on_move = function(x,y) {
         change_IDM_v0(x);
@@ -294,7 +306,7 @@ DYN_WEB.Event.domReady( function() {
 
 
 function change_IDM_v0(x){
-    IDM_v0=IDM_v0_min +(IDM_v0_max-IDM_v0_min)*x/sliderWidth; 
+    IDM_v0=IDM_v0_min +(IDM_v0_max-IDM_v0_min)*x/sliderWidth;
     updateModels();
 
 }
@@ -315,7 +327,7 @@ function change_IDM_v0SliderPos(IDM_v0){
 
 
 DYN_WEB.Event.domReady( function() {
-    var slider_IDM_T 
+    var slider_IDM_T
         = new DYN_WEB.Slider('slider_IDM_T', 'track_IDM_T', 'h');
     slider_IDM_T.on_move = function(x,y) {
         change_IDM_T(x);
@@ -328,7 +340,7 @@ DYN_WEB.Event.domReady( function() {
 
 function change_IDM_T(x){
     IDM_T=IDM_T_min
-	+(IDM_T_max-IDM_T_min)*x/sliderWidth; 
+	+(IDM_T_max-IDM_T_min)*x/sliderWidth;
     updateModels();
 }
 
@@ -346,7 +358,7 @@ function change_IDM_TSliderPos(IDM_T){
 //#############################################
 
 DYN_WEB.Event.domReady( function() {
-    var slider_IDM_s0 
+    var slider_IDM_s0
         = new DYN_WEB.Slider('slider_IDM_s0', 'track_IDM_s0', 'h');
     slider_IDM_s0.on_move = function(x,y) {
         change_IDM_s0(x);
@@ -359,7 +371,7 @@ DYN_WEB.Event.domReady( function() {
 
 function change_IDM_s0(x){
     IDM_s0=IDM_s0_min
-	+(IDM_s0_max-IDM_s0_min)*x/sliderWidth; 
+	+(IDM_s0_max-IDM_s0_min)*x/sliderWidth;
     updateModels();
 }
 
@@ -378,9 +390,12 @@ function change_IDM_s0SliderPos(IDM_s0){
 //#############################################
 
 
-DYN_WEB.Event.domReady( function() {
-    var slider_IDM_a 
+DYN_WEB.Event.domReady(function() {
+    var slider_IDM_a
         = new DYN_WEB.Slider('slider_IDM_a', 'track_IDM_a', 'h');
+    var cur_a = get_IDM_a();
+    var x = (cur_a - IDM_a_min) * sliderWidth / (IDM_a_max - IDM_a_min);
+    document.getElementById('slider_IDM_a').style.left = x+"px";
     slider_IDM_a.on_move = function(x,y) {
         change_IDM_a(x);
         document.getElementById('valueField_IDM_a').innerHTML
@@ -391,7 +406,7 @@ DYN_WEB.Event.domReady( function() {
 
 function change_IDM_a(x){
     IDM_a=IDM_a_min
-	+(IDM_a_max-IDM_a_min)*x/sliderWidth; 
+	+(IDM_a_max-IDM_a_min)*x/sliderWidth;
     updateModels();
 }
 
@@ -410,8 +425,11 @@ function change_IDM_aSliderPos(IDM_a){
 //#############################################
 
 DYN_WEB.Event.domReady( function() {
-    var slider_IDM_b 
+    var slider_IDM_b
         = new DYN_WEB.Slider('slider_IDM_b', 'track_IDM_b', 'h');
+    var cur_b = get_IDM_b();
+    var x = (cur_b - IDM_b_min) * sliderWidth / (IDM_b_max - IDM_b_min);
+    document.getElementById('slider_IDM_b').style.left = x+"px";
     slider_IDM_b.on_move = function(x,y) {
         change_IDM_b(x);
         document.getElementById('valueField_IDM_b').innerHTML
@@ -422,7 +440,7 @@ DYN_WEB.Event.domReady( function() {
 
 function change_IDM_b(x){
     IDM_b=IDM_b_min
-	+(IDM_b_max-IDM_b_min)*x/sliderWidth; 
+	+(IDM_b_max-IDM_b_min)*x/sliderWidth;
     updateModels();
 }
 
@@ -434,5 +452,3 @@ function change_IDM_bSliderPos(IDM_b){
     document.getElementById('valueField_IDM_b').innerHTML
            =parseFloat(IDM_b,10).toFixed(1)+" m/s<sup>2</sup>";
 }
-
-

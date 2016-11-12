@@ -1,0 +1,34 @@
+
+.data-line0 {
+	stroke: steelblue;
+	stroke-width: 1;
+	fill: none;
+}
+
+.data-line1 {
+	stroke: red;
+	stroke-width: 1;
+	fill: none;
+}
+
+.axis {
+  shape-rendering: crispEdges;
+}
+
+.x.axis line, .x.axis path {
+  fill: none;
+  stroke: #000;
+}
+
+.x.axis .minor {
+  stroke-opacity: .5;
+}
+
+.y.axis line, .y.axis path {
+  fill: none;
+  stroke: #000;
+}
+
+line {
+	stroke-width: 2;
+}

@@ -2,7 +2,7 @@
    with responsive design
 */
 
-/* medi queries: 
+/* medi queries:
 https://developer.mozilla.org/en-US/docs/Web/CSS/Media_Queries/Using_media_queries
 
 example: @media (min-width: 700px), handheld and (orientation: landscape) { ... }
@@ -14,7 +14,7 @@ handheld
 (monochrome)
 (color)
 (min-aspect-ratio: 1/1)
-limits: 
+limits:
 */
 
 /*#############################################################*/
@@ -35,7 +35,8 @@ body{
 
 
 #container{
-  margin: 0em auto;
+  /*margin: 0em auto;*/
+  margin-top: 50px;
   /*width: 650px;*/
   width: 98vw;
   text-align: left;
@@ -45,7 +46,7 @@ body{
 /* suppresses borders on images used as links */
 
 img {
-        border-width: 0;
+    border-width: 0;
 }
 
 /* general links */
@@ -89,7 +90,7 @@ a:hover {
 #header{
   position: absolute;
   top: 0vmin;
-  height: calc( 3vw + 3vmin); 
+  height: calc( 3vw + 3vmin);
   left: calc( 15vw + 15vmin);
   width: 40vw; /* needed! */
   font-size: 4vmin;
@@ -105,9 +106,11 @@ a:hover {
 
 #scenarios{
   position: absolute;
-  top:     20vmin;
-  height:  50vmin;
-  left: calc( 84vw - 20vmin);
+  /*top:     8vmin;*/
+  top: 13vmin;
+  height:  5vmin;
+  left: 0;
+  /*left: calc( 70vw - 20vmin);*/
   width: 20vmin;
   z-index: 2;
 }
@@ -115,7 +118,7 @@ a:hover {
 /* leave buttons as is; css offers only very simplistic customization */
 
 button{
-  font-size: calc( 6px + (18 - 6) * ( (100vmin - 300px) / ( 900 - 300) ));
+  font-size: calc( 6px + (18 - 6) * ( (100vmin - 300px) / (900 - 300) ));
   width: 17vmin;
 }
 
@@ -124,7 +127,7 @@ button{
 #infoFlags{
   position: absolute;
   top:   8vmin;
-  left:   calc( 84vw - 20vmin);
+  left:   calc( 70vw - 20vmin);
   width:  20vmin; /* no height */
   z-index: 2;
 }
@@ -137,13 +140,16 @@ button{
   top:   7vmin;
   left:   0vw;
   bottom: 10vmin;
-  width:  84vw;
+  /*width:  40vw;*/
+  /*height:  40vh;*/
+  /*width: 400px;*/
+  /*height: 400px;*/
   margin-right: 0vw;
   margin-left: 0vw;
   z-index: 1;
 }
 
-#impressum{ 
+#impressum{
   position: absolute;
   bottom: 10vmin;
   height: 2vmin;
@@ -155,7 +161,7 @@ button{
 }
 
 
-/* most important: demand variables such as Qin percTruck 
+/* most important: demand variables such as Qin percTruck
 /* and most important model parameters and action variables (speedlimit)*/
 
 #sliders1{ /* table elements relevant for font size */
@@ -170,7 +176,7 @@ button{
 
 /* less important; potentially shifted below or dropped */
 
-#sliders2{ 
+#sliders2{
   position: absolute;
   bottom: 11vmin;
   height: 45vmin;
@@ -179,12 +185,12 @@ button{
   height: 18vmin;
   background-color: rgba(255,255,255,0.4);
   z-index: 2;
-
+  display: none;
 }
 
 /* even less important */
 
-#sliders3{ 
+#sliders3{
   position: absolute;
   top: 17vmin;
   left: 50vw;
@@ -244,7 +250,7 @@ img.infoBlock{
 
 
 
- 
+
  h2{
      font-family: courier, sans-serif;
      font-size: 2.5vmin;
@@ -270,13 +276,13 @@ img.infoBlock{
 
 TH{
   font-size: 2.6vmin;
-  font-weight: bold; 
+  font-weight: bold;
   color: #404060;   /* text color */
 
 }
 
 TR{
-  font-size:2.1vmin; 
+  font-size:2.1vmin;
   color: #000000;
 }
 
@@ -284,8 +290,8 @@ TR{
 
 
 /* ###################################################
-   overrides above specifications 
-   for viewport widths as specified below 
+   overrides above specifications
+   for viewport widths as specified below
    attributesnot specified again are remembered
    particularly:
    get for narrow screens get the menu below instead of to the right
@@ -298,7 +304,7 @@ TR{
 
  body{
     font-size: 3vmin;
- } 
+ }
 
 #scenarios{
   position: absolute;
@@ -311,7 +317,7 @@ TR{
 
  #contents{
    position: absolute;
-   width: 100vw;
+   width: 100vmin;
    height: 100vmin;
  }
 
@@ -359,4 +365,3 @@ TR{
 
 
 } /* @media filter*/
-
